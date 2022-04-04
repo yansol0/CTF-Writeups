@@ -6,7 +6,7 @@ Upon visiting the URL, we are presented with a grid with a number of squares in 
 
 Whenever I see a query parameter used in any CTF challenge I tend to experiement with it straight away, and this one didn't take long to figure out. Knowing that the flag started with "shctf{", I used that as the value for the query param, and it filled the next several grid items with those letters. 
 
-So what was happening was that the server was checking to see if what was in the query string matched the flag, and if the letters watched it would render them inside the grid divs. With this information I quickly wrote a python script to iterate over string.printable, using BeautifulSoup to parse the HTML that is returned by the request, and constructing the flag, and this was the final script:
+So what was happening was that the server was checking to see if what was in the query string matched the flag, and if the letters matched it would render them inside the grid divs. With this information I quickly wrote a python script to iterate over string.printable, using BeautifulSoup to parse the HTML that is returned by the request, and construct the flag, and this was the final script:
 
 	import requests
 	import string
