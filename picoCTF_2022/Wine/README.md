@@ -25,7 +25,7 @@ For the purposes of debugging this exe binary, I used [x64dbg](https://x64dbg.co
 
 An interesting point to note here is the the vuln function was clearly defined in the symbols, meaning we could easily search for it specifically, but the win function's symbols weren't there - meaning we had to manually look for those previously mentioned strings. They weren't hard to find - we could use x64dbg's search feature to search for specific strings - and we can see the function address (00401530) just above the "flag.txt" string below:
 
-![win](/home/yan/Documents/ctf/picoCTF_2022/Wine/screenshots/flag_func.png)
+![win](screenshots/flag_func.png?raw=true)
 
 A quick check of the architecture using Ghidra tells us that this is a 32 bit exe binary, which means that we need to pass the address into this binary in little-endian format.
 
@@ -33,7 +33,7 @@ To find the offset, we need to generate a cyclic pattern, pass it into the progr
 
 To do this I used pwntools' cyclic command line tool to generate a 200 character pattern and passed it into the program. Inpecting the registers in x64dbg shows us the values from our pattern  that made it into the ESP:
 
-![esp](/home/yan/Documents/ctf/picoCTF_2022/Wine/screenshots/offset.png)
+![esp](screenshots/offset.png?raw=true)
 
 
 So our final payload is 144 bytes - 4 bytes for the address we want to redirect to and 140 junk characters. Finally, we can put together a quick pwntools scripts and get the flag:
