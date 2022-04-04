@@ -35,6 +35,7 @@ To do this I used pwntools' cyclic command line tool to generate a 200 character
 
 ![esp](screenshots/offset.png?raw=true)
 
+Using the cyclic tool again, we pass in the characters that made it into the ESP to find the exact number of character that made it into the buffer (cyclic -l laab) - 144. 
 
 So our final payload is 144 bytes - 4 bytes for the address we want to redirect to and 140 junk characters. Finally, we can put together a quick pwntools scripts and get the flag:
 
